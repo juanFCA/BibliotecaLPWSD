@@ -6,6 +6,7 @@
 package br.cesjf.bibliotecalpwsd.dao;
 
 import br.cesjf.bibliotecalpwsd.model.Usuario;
+import br.cesjf.bibliotecalpwsd.util.Crypt;
 import br.cesjf.bibliotecalpwsd.util.PersistenceUtil;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -33,7 +34,7 @@ public class LoginDAO implements Serializable{
         EntityManager em = PersistenceUtil.getEntityManager();
         Query query = em.createQuery("SELECT u FROM Usuario u WHERE u.usuario = :usuario AND u.senha = :senha");
         query.setParameter("usuario", usuario);
-        query.setParameter("senha", senha);
+        query.setParameter("senha", Crypt.md5Encryption(senha));
         List<Usuario> usuarios = query.getResultList();
         if (usuarios != null && usuarios.size() > 0) {
             Logger.getLogger (PersistenceUtil.class.getName()).log(Level.INFO, "Login efetuado com sucesso!");
